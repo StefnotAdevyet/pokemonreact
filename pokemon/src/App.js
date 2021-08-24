@@ -20,7 +20,7 @@ function App() {
     }).then(res => {
       setLoading(false)
       setNextPage(res.data.next)
-      setPreviousPage(res.data.prec)
+      setPreviousPage(res.data.previous)
       setPokemon(res.data.results.map(p => p.name))
     })
     return () => cancel()
@@ -39,8 +39,8 @@ function App() {
   return (
     <>
       <PokeList pokemon={pokemon} />
-      <Pagination goToNextPage={goToNextPage}
-                  goToPreviousPage={goToPreviousPage}/>
+      <Pagination goToNextPage={nextPage ? goToNextPage : null}
+                  goToPreviousPage={previousPage ? goToPreviousPage : null}/>
     </>
   );
 }
