@@ -8,15 +8,26 @@ function App() {
   const [currentPage, setCurrentPage] = useState('https://pokeapi.co/api/v2/pokemon')
   const [nextPage, setNextPage] = useState()
   const [previousPage, setPreviousPage] = useState()
+  const [loading, setLoading] = useState(true)
 
 
   useEffect(() => {
-    axios.get(currentPage).then(res => {
+    setLoading(true)
+    let cancel
+    axios.get(currentPage, {
+      cancelToken: new axios.CancelToken(c => cancel = c)
+    }).then(res => {
+      setLoading(false)
       setNextPage(res.data.next)
       setPreviousPage(res.data.prec)
       setPokemon(res.data.results.map(p => p.name))
     })
+    return () => {
+      cancel.cancel()
+    }
   }, [currentPage])
+
+  if (loading) { return (<div>Loading...</div>) }
 
   return (
   <PokeList pokemon={pokemon} />
