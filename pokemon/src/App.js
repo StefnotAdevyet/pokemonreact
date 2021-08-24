@@ -22,9 +22,7 @@ function App() {
       setPreviousPage(res.data.prec)
       setPokemon(res.data.results.map(p => p.name))
     })
-    return () => {
-      cancel.cancel()
-    }
+    return () => cancel()
   }, [currentPage])
 
   if (loading) { return (<div>Loading...</div>) }
